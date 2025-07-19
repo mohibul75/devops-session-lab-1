@@ -122,9 +122,9 @@ To use the GitHub Actions workflow, you need to set up the following secrets in 
 - `ECR_REPOSITORY`: Name of your ECR repository
 - `EC2_HOST`: Public IP or DNS of your EC2 instance
 - `EC2_USERNAME`: SSH username for your EC2 instance (typically 'ec2-user' or 'ubuntu')
-- `EC2_SSH_KEY`: SSH private key for accessing the EC2 instance (the complete private key including BEGIN and END lines)
+- `EC2_SSH_PASSWORD`: SSH password for your EC2 instance
 
-> **Important**: The SSH key must be in PEM format and include the complete key with header and footer lines (`-----BEGIN RSA PRIVATE KEY-----` and `-----END RSA PRIVATE KEY-----`). Make sure to copy the entire key including newlines.
+> **Note**: For security reasons, it's recommended to use password authentication only for testing. For production, consider setting up proper SSH key authentication or using AWS Systems Manager Session Manager to access your EC2 instances.
 
 ## EC2 Instance Setup
 
