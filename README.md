@@ -117,23 +117,34 @@ This workflow uses OpenID Connect (OIDC) to authenticate with AWS without storin
 
 To use the GitHub Actions workflow, you need to set up the following secrets in your GitHub repository:
 
-- `AWS_ROLE_ARN`: ARN of the IAM role with permissions for ECR (for OIDC authentication)
+- `AWS_ROLE_ARN`: ARN of the IAM role with permissions for ECR
 - `AWS_REGION`: AWS region (e.g., us-east-1)
 - `ECR_REPOSITORY`: Name of your ECR repository
 - `EC2_HOST`: Public IP or DNS of your EC2 instance
 - `EC2_USERNAME`: SSH username for your EC2 instance (typically 'ec2-user' or 'ubuntu')
-- `EC2_SSH_PASSWORD`: SSH password for your EC2 instance
+- `EC2_SSH_KEY`: SSH private key for accessing the EC2 instance (the complete private key including BEGIN and END lines)
 
-> **Note**: For security reasons, it's recommended to use password authentication only for testing. For production, consider setting up proper SSH key authentication or using AWS Systems Manager Session Manager to access your EC2 instances.
+## Deployment
+
+This project uses a fully automated CI/CD pipeline:
+
+1. GitHub Actions builds and tests the application
+2. The Docker image is built and pushed to Amazon ECR
+3. The application is deployed to an EC2 instance via SSH
+
+The deployment process:
+- Connects to the EC2 instance using SSH
+- Pulls the latest Docker image from ECR
+- Stops and removes any existing container
+- Runs a new container with the latest image
 
 ## EC2 Instance Setup
 
 Your EC2 instance should have:
 
 1. Docker installed
-2. AWS CLI configured
-3. Permissions to pull from your ECR repository
-4. Port 80 open in the security group
+2. AWS CLI configured with permissions to pull from ECR
+3. Port 80 open in the security group
 
 ## API Endpoints
 
@@ -141,4 +152,4 @@ Your EC2 instance should have:
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details. 
+This project is licensed under the MIT License - see the LICENSE file for details.
